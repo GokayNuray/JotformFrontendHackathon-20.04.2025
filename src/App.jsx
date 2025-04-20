@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {getFormInfo} from "./utils/jotformAPI.js";
+import ProductCard from "./components/ProductCard.jsx";
 
 function App() {
 
@@ -26,13 +27,15 @@ function App() {
     }, []);
 
   return (
-    <>
+    <div className="flex flex-wrap w-full justify-around">
         {products ?
-            <p>{JSON.stringify(products)}</p>
+            products.map((product => (
+                <ProductCard key={product.pid} product={product}/>
+            )))
             :
             <p>Loading</p>
         }
-    </>
+    </div>
   )
 }
 
