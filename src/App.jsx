@@ -1,6 +1,8 @@
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {useEffect, useState} from "react";
-import {createAnswer, getFormInfo} from "./utils/jotformAPI.js";
-import ProductCard from "./components/ProductCard.jsx";
+import {getFormInfo} from "./utils/jotformAPI.js";
+import ProductsPage from "./components/ProductsPage.jsx";
+import CartPage from "./components/CartPage.jsx";
 
 function App() {
 
@@ -26,18 +28,6 @@ function App() {
         }
     }, []);
 
-    const submit = () => {
-        const boughtProducts = products.filter(product => product.quantity > 0);
-        if (boughtProducts.length === 0) {
-            alert("Please select at least one product");
-            return;
-        }
-        if (!name || !addr) {
-            alert("Please fill in all the fields");
-            return;
-        }
-        createAnswer(formInfo.products, boughtProducts, name, addr);
-    }
 
     const setQuantity = (pid, quantity) => {
         for (let i = 0; i < products.length; i++) {
@@ -58,24 +48,12 @@ function App() {
     });
 
     return (
-        <>
-            <div className= "flex flex-col w-full items-center p-4">
-                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
-                <input type="text" placeholder="Address" value={addr} onChange={(e) => setAddr(e.target.value)}/>
-                <span>Total: {total}$</span>
-                <button onClick={submit}>Submit</button>
-            </div>
-
-            <div className="flex flex-wrap w-full justify-around">
-                {products ?
-                    products.map((product => (
-                        <ProductCard key={product.pid} product={product} changeQuantity={setQuantity}/>
-                    )))
-                    :
-                    <p>Loading</p>
-                }
-            </div>
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<ProductsPage products={products} setQuantity={setQuantity}/>}/>
+                <Route path="/cart" element={<CartPage formInfo={formInfo} products={products} total={total} setQuantity={setQuantity} name={name} addr={addr} setName={setName} setAddr={setAddr}/>}/>
+            </Routes>
+        </BrowserRouter>
     )
 }
 
