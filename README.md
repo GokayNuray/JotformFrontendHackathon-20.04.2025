@@ -1,12 +1,11 @@
 # Jotform Frontend Hackathon Project
 
 ## User Information
-Please fill in your information after forking this repository:
 
 - **Name**: Gökay Nuray
 
 ## Project Description
-his is a e-commerce web app that uses Jotform API as a backend.
+This is an e-commerce web app that uses Jotform API as a backend.
 
 ## Getting Started
 1. Clone the repository
