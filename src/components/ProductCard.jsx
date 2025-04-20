@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-function ProductCard({ product, changeQuantity, toggleFav }) {
+function ProductCard({products, product, changeQuantity, toggleFav}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
 
@@ -33,9 +33,13 @@ function ProductCard({ product, changeQuantity, toggleFav }) {
 
     const cost = product.price * product.quantity;
 
+    const firstName = product.name.split(",")[0];
+    const similarProducts = products.filter(p => p.name.split(",")[0] === firstName && p.pid !== product.pid);
+
     return (
-        <div className={"wrap-normal relative h-100 w-40 bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-xl transition-shadow duration-300"
-        + (product.quantity > 0 ? " border-2 border-green-500" : " border-2 border-white")}>
+        <div
+            className={"wrap-normal relative h-100 w-40 bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-xl transition-shadow duration-300"
+                + (product.quantity > 0 ? " border-2 border-green-500" : " border-2 border-white")}>
             <div
                 className="absolute top-2 right-2 cursor-pointer text-yellow-500 text-2xl hover:text-yellow-800 transition-colors duration-300"
                 onClick={toggleFavorite}
@@ -67,11 +71,32 @@ function ProductCard({ product, changeQuantity, toggleFav }) {
                     className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 "
                     onClick={() => setIsModalOpen(false)}
                 >
-                        <img
-                            src={product.images[0]}
-                            alt={product.name}
-                            className="max-w-1/2 h-1/2 rounded-md "
-                        />
+                    <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="max-w-1/2 h-1/2 "
+                    />
+                    <div className="bg-white h-1/2 ">
+                        <h2 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h2>
+                        <p className="wrap-normal text-gray-600 text-sm mb-4">{product.description}</p>
+                        <p className="text-lg font-semibold text-blue-600 mb-4">${product.price}</p>
+                    </div>
+                    <div className="bg-white absolute top-2 right-2 text-red-500 text-2xl">
+                        <h2>Similar Products</h2>
+                        {similarProducts.map((similarProduct) => (
+                            <div key={similarProduct.pid} className="flex flex-col items-center">
+                                <img
+                                    src={similarProduct.images[0]}
+                                    alt={similarProduct.name}
+                                    className="h-20 w-20 rounded-md mb-2 cursor-pointer hover:scale-105 transition-transform duration-300"
+                                    onClick={() => {
+                                        setIsModalOpen(false);
+                                    }}
+                                />
+                                <p className="text-sm text-gray-600">{similarProduct.name}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

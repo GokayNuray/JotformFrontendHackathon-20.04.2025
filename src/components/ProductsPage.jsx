@@ -64,6 +64,7 @@ function ProductsPage({products, total, setQuantity}) {
                 {filteredProducts ?
                     filteredProducts.map((product => (
                         <ProductCard
+                            products={products}
                             key={product.pid}
                             product={product}
                             changeQuantity={setQuantity}
