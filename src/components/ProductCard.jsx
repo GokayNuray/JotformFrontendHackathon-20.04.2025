@@ -75,10 +75,19 @@ function ProductCard({products, product, changeQuantity, toggleFav, openModal, s
                         alt={product.name}
                         className="max-w-1/2 h-1/2 "
                     />
-                    <div className="bg-white h-1/2 ">
+                    <div className="bg-white h-1/2 " onClick={(e) => e.stopPropagation()}>
                         <h2 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h2>
                         <p className="wrap-normal text-gray-600 text-sm mb-4">{product.description}</p>
                         <p className="text-lg font-semibold text-blue-600 mb-4">${product.price}</p>
+                        <div className="bottom-0 w-40">
+                            <input
+                                min="0"
+                                value={product.quantity}
+                                onChange={quantityChange}
+                                className="w-full border border-gray-300 rounded-md p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <p className="text-gray-800 mt-4">subtotal: ${cost}</p>
+                        </div>
                     </div>
                     <div className="bg-white absolute top-2 right-2 text-red-500 text-2xl">
                         <h2>Similar Products</h2>
