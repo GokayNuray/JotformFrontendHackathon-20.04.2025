@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 
-function ProductCard({products, product, changeQuantity, toggleFav}) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+function ProductCard({products, product, changeQuantity, toggleFav, openModal, setOpenModal}) {
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
@@ -51,7 +50,7 @@ function ProductCard({products, product, changeQuantity, toggleFav}) {
                 src={product.images[0]}
                 alt={product.name}
                 className="h-30 w-40 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform duration-300 hover:shadow-lg"
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setOpenModal(product.pid)}
             />
             <h2 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h2>
             <p className="wrap-normal text-gray-600 text-sm mb-4">{product.description}</p>
@@ -66,10 +65,10 @@ function ProductCard({products, product, changeQuantity, toggleFav}) {
                 <p className="text-gray-800 mt-4">subtotal: ${cost}</p>
             </div>
 
-            {isModalOpen && (
+            {(openModal === product.pid) && (
                 <div
                     className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 "
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => setOpenModal(null)}
                 >
                     <img
                         src={product.images[0]}
@@ -89,8 +88,9 @@ function ProductCard({products, product, changeQuantity, toggleFav}) {
                                     src={similarProduct.images[0]}
                                     alt={similarProduct.name}
                                     className="h-20 w-20 rounded-md mb-2 cursor-pointer hover:scale-105 transition-transform duration-300"
-                                    onClick={() => {
-                                        setIsModalOpen(false);
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setOpenModal(similarProduct.pid);
                                     }}
                                 />
                                 <p className="text-sm text-gray-600">{similarProduct.name}</p>

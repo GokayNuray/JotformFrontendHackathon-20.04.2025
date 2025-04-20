@@ -7,6 +7,7 @@ function ProductsPage({products, total, setQuantity}) {
     const [search, setSearch] = useState("");
     const [favorites, setFavorites] = useState([]);
     const [favOnly, setFavOnly] = useState(false);
+    const [openModal, setOpenModal] = useState(null);
 
     useEffect(() => {
         const local = localStorage.getItem("favorites");
@@ -69,6 +70,8 @@ function ProductsPage({products, total, setQuantity}) {
                             product={product}
                             changeQuantity={setQuantity}
                             toggleFav={toggleFavorite}
+                            openModal={openModal}
+                            setOpenModal={setOpenModal}
                         />
                     )))
                     :
