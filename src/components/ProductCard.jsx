@@ -1,7 +1,31 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
-function ProductCard({ product, changeQuantity }) {
+function ProductCard({ product, changeQuantity, toggleFav }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    useEffect(() => {
+        const local = localStorage.getItem("favorites");
+        if (local) {
+            const favorites = JSON.parse(local);
+            if (favorites.includes(product.pid)) {
+                setIsFavorite(true);
+            }
+        }
+    }, []);
+
+    const toggleFavorite = () => {
+        let local = localStorage.getItem("favorites") ?? "[]";
+        local = JSON.parse(local);
+        if (local.includes(product.pid)) {
+            local = local.filter(pid => pid !== product.pid);
+        } else {
+            local.push(product.pid);
+        }
+        localStorage.setItem("favorites", JSON.stringify(local));
+        setIsFavorite(!isFavorite);
+        toggleFav(product.pid);
+    }
 
     const quantityChange = (e) => {
         changeQuantity(product.pid, e.target.value);
@@ -12,6 +36,13 @@ function ProductCard({ product, changeQuantity }) {
     return (
         <div className={"wrap-normal relative h-100 w-40 bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-xl transition-shadow duration-300"
         + (product.quantity > 0 ? " border-2 border-green-500" : " border-2 border-white")}>
+            <div
+                className="absolute top-2 right-2 cursor-pointer text-yellow-500 text-2xl hover:text-yellow-800 transition-colors duration-300"
+                onClick={toggleFavorite}
+            >
+                {isFavorite ? "★" : "☆"}
+            </div>
+
             <img
                 src={product.images[0]}
                 alt={product.name}
