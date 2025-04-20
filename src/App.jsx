@@ -24,7 +24,18 @@ function App() {
     useEffect(() => {
         if (!formInfo) {
             setFormInfo("wait");
-            getFormInfo(setFormInfo);
+            getFormInfo((data => {
+                let local = localStorage.getItem("products");
+                if (local) {
+                    local = JSON.parse(local);
+                    data.products.forEach((product) => {
+                        if (local[product.pid]) {
+                            product.quantity = local[product.pid];
+                        }
+                    });
+                }
+                setFormInfo(data);
+            }));
         }
     }, []);
 
@@ -33,6 +44,12 @@ function App() {
         if (quantity === "") quantity = 0;
         if (isNaN(quantity)) return;
         quantity = parseInt(quantity);
+
+        let local = localStorage.getItem("products") ?? "{}";
+        local = JSON.parse(local);
+        local[pid] = quantity;
+        localStorage.setItem("products", JSON.stringify(local));
+
         for (let i = 0; i < products.length; i++) {
             if (products[i].pid === pid) {
                 products[i].quantity = quantity;
@@ -54,7 +71,9 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<ProductsPage products={products} total={total} setQuantity={setQuantity}/>}/>
-                <Route path="/cart" element={<CartPage formInfo={formInfo} products={products} total={total} setQuantity={setQuantity} name={name} addr={addr} setName={setName} setAddr={setAddr}/>}/>
+                <Route path="/cart" element={<CartPage formInfo={formInfo} products={products} total={total}
+                                                       setQuantity={setQuantity} name={name} addr={addr}
+                                                       setName={setName} setAddr={setAddr}/>}/>
             </Routes>
         </BrowserRouter>
     )
