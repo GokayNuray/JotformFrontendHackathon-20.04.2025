@@ -66,48 +66,64 @@ function ProductCard({products, product, changeQuantity, toggleFav, openModal, s
             </div>
 
             {(openModal === product.pid) && (
-                <div
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 "
-                    onClick={() => setOpenModal(null)}
-                >
-                    <img
-                        src={product.images[0]}
-                        alt={product.name}
-                        className="max-w-1/2 h-1/2 "
+    <div
+        className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        onClick={() => setOpenModal(null)}
+    >
+        <div
+            className="bg-white rounded-lg shadow-lg p-6 w-3/4 max-w-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+        >
+            <button
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-xl"
+                onClick={() => setOpenModal(null)}
+            >
+                &times;
+            </button>
+            <div className="flex flex-col items-center space-y-4">
+                <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="h-64 rounded-md mb-4"
+                />
+                <h2 className="text-2xl font-bold text-gray-800">{product.name}</h2>
+                <p className="text-gray-600 text-sm text-center">{product.description}</p>
+                <p className="text-lg font-semibold text-blue-600">${product.price}</p>
+                <div className="flex items-center space-x-4">
+                    <input
+                        min="0"
+                        value={product.quantity}
+                        onChange={quantityChange}
+                        className="border border-gray-300 rounded-md p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <div className="bg-white h-1/2 " onClick={(e) => e.stopPropagation()}>
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h2>
-                        <p className="wrap-normal text-gray-600 text-sm mb-4">{product.description}</p>
-                        <p className="text-lg font-semibold text-blue-600 mb-4">${product.price}</p>
-                        <div className="bottom-0 w-40">
-                            <input
-                                min="0"
-                                value={product.quantity}
-                                onChange={quantityChange}
-                                className="w-full border border-gray-300 rounded-md p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <p className="text-gray-800 mt-4">subtotal: ${cost}</p>
-                        </div>
-                    </div>
-                    <div className="bg-white absolute top-2 right-2 text-red-500 text-2xl">
-                        <h2>Similar Products</h2>
-                        {similarProducts.map((similarProduct) => (
-                            <div key={similarProduct.pid} className="flex flex-col items-center">
-                                <img
-                                    src={similarProduct.images[0]}
-                                    alt={similarProduct.name}
-                                    className="h-20 w-20 rounded-md mb-2 cursor-pointer hover:scale-105 transition-transform duration-300"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setOpenModal(similarProduct.pid);
-                                    }}
-                                />
-                                <p className="text-sm text-gray-600">{similarProduct.name}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <p className="text-gray-800">Subtotal: ${cost}</p>
                 </div>
-            )}
+            </div>
+            <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Similar Products</h3>
+                <div className="flex space-x-4 overflow-x-auto overflow-y-hidden">
+                    {similarProducts.map((similarProduct) => (
+                        <div
+                            key={similarProduct.pid}
+                            className="flex flex-col items-center cursor-pointer hover:scale-105 transition-transform duration-300"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenModal(similarProduct.pid);
+                            }}
+                        >
+                            <img
+                                src={similarProduct.images[0]}
+                                alt={similarProduct.name}
+                                className="h-20 w-20 rounded-md mb-2"
+                            />
+                            <p className="text-sm text-gray-600 text-center">{similarProduct.name}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+)}
         </div>
     );
 }
