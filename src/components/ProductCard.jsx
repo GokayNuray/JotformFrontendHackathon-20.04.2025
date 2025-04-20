@@ -11,7 +11,7 @@ function ProductCard({product, changeQuantity}) {
             <h2 className="text-xl font-bold">{product.name}</h2>
             <p className="text-gray-500">{product.description}</p>
             <p className="text-lg font-semibold">{product.price}</p>
-            <input type="number" min="0" value={product.quantity} onChange={quantityChange}/>
+            <input min="0" value={product.quantity} onChange={quantityChange}/>
         </div>);
 }
 

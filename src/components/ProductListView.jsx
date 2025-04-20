@@ -8,7 +8,6 @@ function ProductListView({product, setQuantity}) {
                 <p className="text-lg font-semibold text-gray-700">${product.price}</p>
             </div>
             <input
-                type="number"
                 min="0"
                 value={product.quantity}
                 onChange={(e) => setQuantity(product.pid, e.target.value)}

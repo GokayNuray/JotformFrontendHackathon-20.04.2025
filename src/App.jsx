@@ -30,6 +30,9 @@ function App() {
 
 
     const setQuantity = (pid, quantity) => {
+        if (quantity === "") quantity = 0;
+        if (isNaN(quantity)) return;
+        quantity = parseInt(quantity);
         for (let i = 0; i < products.length; i++) {
             if (products[i].pid === pid) {
                 products[i].quantity = quantity;
