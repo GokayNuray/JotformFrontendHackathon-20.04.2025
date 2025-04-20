@@ -5,7 +5,8 @@ import ProductCard from "./components/ProductCard.jsx";
 function App() {
 
     const [formInfo, setFormInfo] = useState();
-    console.log(formInfo);
+    const [name, setName] = useState();
+    const [addr, setAddr] = useState();
 
     const products = formInfo?.["products"]?.map((product) => {
         return {
@@ -14,10 +15,9 @@ function App() {
             description: product.description,
             price: product.price,
             images: JSON.parse(product.images),
-            quantity: product.quantity,
+            quantity: product.quantity ?? 0,
         }
     });
-    console.log(products);
 
     useEffect(() => {
         if (!formInfo) {
@@ -32,8 +32,6 @@ function App() {
             alert("Please select at least one product");
             return;
         }
-        const name = "john"
-        const addr = "istanbul"
         if (!name || !addr) {
             alert("Please fill in all the fields");
             return;
@@ -54,17 +52,30 @@ function App() {
         }
     }
 
+    let total = 0;
+    products && products.forEach(product => {
+        total += product.price * product.quantity;
+    });
+
     return (
-        <div className="flex flex-wrap w-full justify-around">
-            <button onClick={submit}>Submit</button>
-            {products ?
-                products.map((product => (
-                    <ProductCard key={product.pid} product={product} changeQuantity={setQuantity}/>
-                )))
-                :
-                <p>Loading</p>
-            }
-        </div>
+        <>
+            <div className= "flex flex-col w-full items-center p-4">
+                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                <input type="text" placeholder="Address" value={addr} onChange={(e) => setAddr(e.target.value)}/>
+                <span>Total: {total}$</span>
+                <button onClick={submit}>Submit</button>
+            </div>
+
+            <div className="flex flex-wrap w-full justify-around">
+                {products ?
+                    products.map((product => (
+                        <ProductCard key={product.pid} product={product} changeQuantity={setQuantity}/>
+                    )))
+                    :
+                    <p>Loading</p>
+                }
+            </div>
+        </>
     )
 }
 
