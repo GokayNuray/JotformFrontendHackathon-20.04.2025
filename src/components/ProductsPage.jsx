@@ -11,7 +11,7 @@ function ProductsPage({products, setQuantity}) {
     return (
         <>
             <button onClick={handleClick}>cart</button>
-            <div className="flex flex-wrap w-full justify-around">
+            <div className="flex flex-wrap w-1/2 justify-around mx-auto">
                 {products ?
                     products.map((product => (
                         <ProductCard key={product.pid} product={product} changeQuantity={setQuantity}/>
