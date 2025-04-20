@@ -1,12 +1,7 @@
-import {useState} from "react";
-
-function ProductCard({product: product}) {
-
-    const [quantity, setQuantity] = useState(0);
+function ProductCard({product, changeQuantity}) {
 
     const quantityChange = (e) => {
-        setQuantity(e.target.value);
-        product.quantity = e.target.value;
+        changeQuantity(product.pid, e.target.value);
     }
 
     return (
@@ -16,7 +11,7 @@ function ProductCard({product: product}) {
             <h2 className="text-xl font-bold">{product.name}</h2>
             <p className="text-gray-500">{product.description}</p>
             <p className="text-lg font-semibold">{product.price}</p>
-            <input type="number" min="0" value={quantity} onChange={quantityChange}/>
+            <input type="number" min="0" value={product.quantity} onChange={quantityChange}/>
         </div>);
 }
 

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getFormInfo} from "./utils/jotformAPI.js";
+import {createAnswer, getFormInfo} from "./utils/jotformAPI.js";
 import ProductCard from "./components/ProductCard.jsx";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
             description: product.description,
             price: product.price,
             images: JSON.parse(product.images),
-            quantity: 0,
+            quantity: product.quantity,
         }
     });
     console.log(products);
@@ -26,17 +26,46 @@ function App() {
         }
     }, []);
 
-  return (
-    <div className="flex flex-wrap w-full justify-around">
-        {products ?
-            products.map((product => (
-                <ProductCard key={product.pid} product={product}/>
-            )))
-            :
-            <p>Loading</p>
+    const submit = () => {
+        const boughtProducts = products.filter(product => product.quantity > 0);
+        if (boughtProducts.length === 0) {
+            alert("Please select at least one product");
+            return;
         }
-    </div>
-  )
+        const name = "john"
+        const addr = "istanbul"
+        if (!name || !addr) {
+            alert("Please fill in all the fields");
+            return;
+        }
+        createAnswer(formInfo.products, boughtProducts, name, addr);
+    }
+
+    const setQuantity = (pid, quantity) => {
+        for (let i = 0; i < products.length; i++) {
+            if (products[i].pid === pid) {
+                products[i].quantity = quantity;
+                formInfo.products[i].quantity = quantity;
+                setFormInfo({
+                    ...formInfo,
+                });
+                break;
+            }
+        }
+    }
+
+    return (
+        <div className="flex flex-wrap w-full justify-around">
+            <button onClick={submit}>Submit</button>
+            {products ?
+                products.map((product => (
+                    <ProductCard key={product.pid} product={product} changeQuantity={setQuantity}/>
+                )))
+                :
+                <p>Loading</p>
+            }
+        </div>
+    )
 }
 
 export default App
