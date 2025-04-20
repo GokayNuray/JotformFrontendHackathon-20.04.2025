@@ -1,12 +1,19 @@
 import ProductCard from "./ProductCard.jsx";
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 function ProductsPage({products, total, setQuantity}) {
+
+    const [search, setSearch] = useState("");
 
     const navigate = useNavigate();
     const handleClick = () => {
         navigate("/cart");
     }
+
+    const filteredProducts = products?.filter(product => {
+        return product.name.toLowerCase().includes(search.toLowerCase());
+    });
 
     return (
         <div className="min-h-screen bg-gray-100 py-8">
@@ -17,10 +24,17 @@ function ProductsPage({products, total, setQuantity}) {
                 >
                     Go to Cart (${total})
                 </button>
+                <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="ml-16 mt-4 p-2 border border-gray-300 rounded-md w-64"
+                />
             </div>
-            <div className="flex flex-wrap w-3/4 justify-around mx-auto gap-6">
-                {products ?
-                    products.map((product => (
+            <div className="flex flex-wrap w-3/4 justify-center mx-auto gap-3">
+                {filteredProducts ?
+                    filteredProducts.map((product => (
                         <ProductCard
                             key={product.pid}
                             product={product}

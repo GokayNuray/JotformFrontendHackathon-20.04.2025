@@ -53,7 +53,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<ProductsPage products={products} setQuantity={setQuantity}/>}/>
+                <Route path="/" element={<ProductsPage products={products} total={total} setQuantity={setQuantity}/>}/>
                 <Route path="/cart" element={<CartPage formInfo={formInfo} products={products} total={total} setQuantity={setQuantity} name={name} addr={addr} setName={setName} setAddr={setAddr}/>}/>
             </Routes>
         </BrowserRouter>
