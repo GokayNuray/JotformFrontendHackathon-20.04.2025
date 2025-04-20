@@ -32,8 +32,13 @@ function ProductCard({products, product, changeQuantity, toggleFav, openModal, s
 
     const cost = product.price * product.quantity;
 
-    const firstName = product.name.split(",")[0];
-    const similarProducts = products.filter(p => p.name.split(",")[0] === firstName && p.pid !== product.pid);
+    const comma = product.name.indexOf(",");
+    const space = product.name.indexOf(" ");
+    const firstDelimiter = comma === -1 ? space : (space === -1 ? comma : Math.min(comma, space));
+    const firstName = firstDelimiter === -1 ? product.name : product.name.substring(0, firstDelimiter);
+
+
+    const similarProducts = products.filter(p => p.name.includes(firstName) && p.pid !== product.pid);
 
     return (
         <div
